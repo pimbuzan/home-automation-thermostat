@@ -7,19 +7,20 @@ PATTERN = 't='
 def read_tmp():
     try:
         with open(SENSOR_DUMP) as f:
-            tmp_raw = f.read()
-            tmp_match = re.search(PATTERN, tmp_raw)
-            tmp = tmp_raw[tmp_match.start()+2:-1]
+            lines = f.read()
+            tmp_match = re.search(PATTERN, lines)
+            tmp_raw = lines[tmp_match.start()+2:-1]
     except Exception as e:
         print("Internal error: ", e)
-    return '.'.join((tmp[:2], tmp[-2]))
+    tmp_str = '.'.join((tmp_raw[:2], tmp_raw[-2]))
+    return '{:.1f}'.format(tmp_str)
 
 
 def run():
     while True:
         try:
             tmp = read_tmp()
-            print("Temperature is: ", float(tmp))
+            print("Temperature is: ", tmp)
             sleep(5)
         except:
             break
