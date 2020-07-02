@@ -12,7 +12,7 @@ def read_tmp():
             tmp = tmp_raw[tmp_match.start()+2:-1]
     except Exception as e:
         print("Internal error: ", e)
-    return tmp
+    return '.'.join([(tmp[:2], tmp[-2]))
 
 
 def run():
