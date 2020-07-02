@@ -12,14 +12,14 @@ def read_tmp():
             tmp = tmp_raw[tmp_match.start()+2:-1]
     except Exception as e:
         print("Internal error: ", e)
-    return '.'.join([(tmp[:2], tmp[-2]))
+    return '.'.join((tmp[:2], tmp[-2]))
 
 
 def run():
     while True:
         try:
             tmp = read_tmp()
-            print("TTemperature is: ", float(tmp))
+            print("Temperature is: ", float(tmp))
             sleep(5)
         except:
             break
