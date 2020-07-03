@@ -1,8 +1,12 @@
+# low level component
 import re
 from time import sleep
 
+# constants
+TYPE = 'DS18B20'
 SENSOR_DUMP = '/sys/bus/w1/devices/28-8000002cd6af/w1_slave'
 PATTERN = 't='
+#
 
 def read_tmp():
     try:
@@ -10,10 +14,9 @@ def read_tmp():
             lines = f.read()
             tmp_match = re.search(PATTERN, lines)
             tmp_raw = lines[tmp_match.start()+2:-1]
+            return float(tmp_raw) / 1000.0
     except Exception as e:
         print("Internal error: ", e)
-    tmp_str = '.'.join((tmp_raw[:2], tmp_raw[-2]))
-    return '{:.1f}'.format(tmp_str)
 
 
 def run():
