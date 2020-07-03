@@ -10,9 +10,9 @@
 - [5V Relay](https://cleste.ro/modul-releu-1-canal-5v.html)
 
 ### Hardware Picture
-1. **Inoklima Thermometer on the TOP**
+1. **Inoklima Thermostat on the TOP**
 
-2. **Prototype Thermometer on the BOTTOM**
+2. **Prototype Thermostat on the BOTTOM**
 
 ![Prototype](images/hardware.JPEG)
 
