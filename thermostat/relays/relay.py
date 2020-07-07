@@ -22,7 +22,6 @@ class Relay:
             GPIO.output(PIN, False)
             print('Relay: opening circuit')
             return
-        print('Relay: doing nothing')
         return
     
     def close_conn(self):
@@ -33,7 +32,6 @@ class Relay:
             GPIO.output(PIN, True)
             print('Relay: closing circuit')
             return
-        print('Relay: doing nothing')
         return
     
     

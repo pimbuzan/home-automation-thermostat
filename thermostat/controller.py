@@ -20,9 +20,10 @@ class Controller:
     """
 
     def __init__(self):
-        self.tmp_sensor = TemperatureSensor(1)
+        self.tmp_sensor = TemperatureSensor()
         self.relay = Relay()
         self._threshold = None
+        self._last_op = None
 
 
     @property
@@ -40,7 +41,7 @@ class Controller:
       return self.tmp_sensor.read()
 
 
-    def handle_threshold_update(self):
+    def observe(self):
       ## Check if the new threshold is above the current read temperature
       ## Case current read temperature < new threshold:
       ## - start heating
@@ -48,8 +49,6 @@ class Controller:
       ## - stop heating
       if not self.threshold:
         raise Exception("Set a Threshold value first")
-      print('Temp is: ', self.temperature)
-      print("Threshold is set to: ", self.threshold)
       if not self.temperature:
         # wait timeout (default=60s) after start for sensor to initialize
         self.operation_handler(Operation.NOOP)
@@ -69,7 +68,9 @@ class Controller:
         2: self._action_stop_heat,
       }
       action = operations.get(operation.value, self._action_noop)
-      print('Running operation: %s' % operation.name)
+      if self._last_op != operation.value:
+          self._last_op = operation.value
+          print('Running operation: %s' % operation.name)
       action()
 
 
@@ -82,11 +83,3 @@ class Controller:
     def _action_noop(self):
       pass
 
-    def run_in_loop(self):
-      while True:
-        import time
-        try:
-          time.sleep(5)
-          self.handle_threshold_update()
-        except Exception as e:
-          print("Controller: Internal Error - ", e)

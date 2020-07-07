@@ -1,13 +1,10 @@
-from controller import Controller
-
-import sys
 import multiprocessing
 import time
 
 from redis import Redis
+from flask import Flask
 
-
-from flask import Flask, request
+from controller import Controller
 
 ctl = Controller()
 r = Redis()
@@ -20,19 +17,9 @@ def task_run_controller_loop():
             temp = r.get('temp')
             ctl.threshold = temp
             time.sleep(1)
-            ctl.handle_threshold_update()
+            ctl.observe()
         except Exception as e:
             print(e)
-
-
-@app.route('/start')
-def start_thermostat():
-    print('starting this whole thing up')
-    p2 = multiprocessing.Process(target=task_run_controller_loop)
-    p2.daemon = True
-    p2.start()
-    return "The controller started in the background"
-
     
 
 @app.route('/config/<float:temp>', methods=["POST"])
@@ -40,3 +27,8 @@ def config(temp):
     r.set('temp', temp)
     return "Thermostat temperature set to: {}".format(temp)
 
+if __name__ == "__main__":
+    loop = multiprocessing.Process(target=task_run_controller_loop)
+    loop.daemon = True
+    loop.start()
+    app.run(host='0.0.0.0')

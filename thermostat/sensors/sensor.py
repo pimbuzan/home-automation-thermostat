@@ -26,7 +26,8 @@ class TemperatureSensor:
     def read(self):
         if self._last_read_time + self._timeout < self._timestamp:
             self._last_read_val = read_tmp()
-            self._last_read_time = self._timestamp 
+            self._last_read_time = self._timestamp
+            print(self)
         return self._last_read_val
     
 
