@@ -42,15 +42,15 @@ class Controller:
 
 
     def observe(self):
-      ## Check if the new threshold is above the current read temperature
-      ## Case current read temperature < new threshold:
+      ## Check if the threshold is above the current read temperature
+      ## Case current read temperature < threshold:
       ## - start heating
-      ## Case current read temperature > new threshold:
+      ## Case current read temperature > threshold:
       ## - stop heating
       if not self.threshold:
         raise Exception("Set a Threshold value first")
       if not self.temperature:
-        # wait timeout (default=60s) after start for sensor to initialize
+        # wait for sensor valid reading
         self.operation_handler(Operation.NOOP)
       elif self.temperature > self.threshold + MARGIN:
         self.operation_handler(Operation.HEAT_OFF)
@@ -82,4 +82,3 @@ class Controller:
 
     def _action_noop(self):
       pass
-

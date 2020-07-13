@@ -7,14 +7,14 @@ from flask import Flask
 from controller import Controller
 
 ctl = Controller()
-r = Redis()
+db = Redis()
 
 app = Flask(__name__)
 
 def task_run_controller_loop():
     while True:
         try:
-            temp = r.get('temp')
+            temp = db.get('temp')
             ctl.threshold = temp
             time.sleep(1)
             ctl.observe()
@@ -24,7 +24,7 @@ def task_run_controller_loop():
 
 @app.route('/config/<float:temp>', methods=["POST"])
 def config(temp):
-    r.set('temp', temp)
+    db.set('temp', temp)
     return "Thermostat temperature set to: {}".format(temp)
 
 if __name__ == "__main__":

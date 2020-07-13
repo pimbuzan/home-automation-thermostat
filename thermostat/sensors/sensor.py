@@ -1,13 +1,13 @@
 from datetime import datetime
 
-from sensors.script import read_tmp
+SENSOR_DUMP = '/sys/bus/w1/devices/28-8000002cd6af/w1_slave'
+PATTERN = 't='
 
 class TemperatureSensor:
 
-    def __init__(self, timeout=5):
+    def __init__(self):
         self._last_read_val = None
         self._last_read_time = self._timestamp
-        self._timeout = timeout
 
 
     def __str__(self):
@@ -24,10 +24,19 @@ class TemperatureSensor:
 
 
     def read(self):
-        if self._last_read_time + self._timeout < self._timestamp:
-            self._last_read_val = read_tmp()
-            self._last_read_time = self._timestamp
-            print(self)
+        self._last_read_val = self._read_tmp()
+        self._last_read_time = self._timestamp
+        print(self)
         return self._last_read_val
-    
 
+
+    def _read_tmp(self):
+        try:
+            with open(SENSOR_DUMP) as f:
+                lines = f.read()
+                tmp_match = re.search(PATTERN, lines)
+                tmp_raw = lines[tmp_match.start()+2:-1]
+                return float(tmp_raw) / 1000.0
+        except Exception as e:
+            print("Internal error: ", e)
+            return None
