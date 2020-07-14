@@ -1,4 +1,3 @@
-import time
 import atexit
 
 import RPi.GPIO as GPIO
@@ -7,8 +6,9 @@ PIN = 12
 ON = 'closed'
 OFF = 'open'
 
-class Relay:
-    
+
+class Relay(object):
+
     def __init__(self):
         # setup GPIO pinout
         setup()
@@ -23,7 +23,7 @@ class Relay:
             print('Relay: opening circuit')
             return
         return
-    
+
     def close_conn(self):
         # on
         # close circuit
@@ -33,16 +33,14 @@ class Relay:
             print('Relay: closing circuit')
             return
         return
-    
-    
+
     @property
     def state(self):
         return self._state
 
-
     @state.setter
-    def state(self, op):
-        self._state = op
+    def state(self, op_state):
+        self._state = op_state
 
 
 def setup():

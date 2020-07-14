@@ -1,0 +1,6 @@
+{
+    "editor.formatOnSave": true,
+    "python.linting.pylintEnabled": true,
+    "python.linting.enabled": true,
+    "python.linting.pep8Enabled": true
+}
