@@ -1,8 +1,5 @@
 from enum import Enum
 
-from relays import Relay
-from sensors import TemperatureSensor
-
 # this is used to prevent relay rapid switching
 MARGIN = 0.5
 
@@ -20,9 +17,9 @@ class Controller(object):
     Open / Close the relay based on the threshold temperature
     """
 
-    def __init__(self):
-        self.tmp_sensor = TemperatureSensor()
-        self.relay = Relay()
+    def __init__(self, tmp_sensor, relay):
+        self._tmp_sensor = tmp_sensor
+        self._relay = relay
         self._threshold = None
         self._last_op = None
 
@@ -36,9 +33,9 @@ class Controller(object):
 
     @property
     def temperature(self):
-        return self.tmp_sensor.read()
+        return self._tmp_sensor.read()
 
-    def observe(self):
+    def monitor(self):
         # Check if the threshold is above the current read temperature
         # Case current read temperature < threshold:
         # - start heating
@@ -48,15 +45,15 @@ class Controller(object):
             raise Exception("Set a Threshold value first")
         if not self.temperature:
             # wait for sensor valid reading
-            self.operation_handler(Operation.NOOP)
+            self._operation_handler(Operation.NOOP)
         elif self.temperature > self.threshold + MARGIN:
-            self.operation_handler(Operation.HEAT_OFF)
+            self._operation_handler(Operation.HEAT_OFF)
         elif self.temperature < self.threshold - MARGIN:
-            self.operation_handler(Operation.HEAT_ON)
+            self._operation_handler(Operation.HEAT_ON)
         else:
-            self.operation_handler(Operation.NOOP)
+            self._operation_handler(Operation.NOOP)
 
-    def operation_handler(self, operation):
+    def _operation_handler(self, operation):
         """Accepts an operation object and runs an action mapped to that operation"""
         operations = {
             0: self._action_noop,
@@ -70,10 +67,10 @@ class Controller(object):
         action()
 
     def _action_start_heat(self):
-        self.relay.close_conn()
+        self._relay.close_conn()
 
     def _action_stop_heat(self):
-        self.relay.open_conn()
+        self._relay.open_conn()
 
     def _action_noop(self):
         pass

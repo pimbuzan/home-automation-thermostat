@@ -5,8 +5,10 @@ from redis import Redis
 from flask import Flask
 
 from controller import Controller
+from relays import Relay
+from sensors import TemperatureSensor
 
-ctl = Controller()
+ctl = Controller(TemperatureSensor(), Relay())
 db = Redis()
 app = Flask(__name__)
 
@@ -17,7 +19,7 @@ def task_run_controller_loop():
             temp = db.get('temp')
             ctl.threshold = temp
             time.sleep(1)
-            ctl.observe()
+            ctl.monitor()
         except Exception as e:
             print(e)
 

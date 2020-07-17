@@ -19,7 +19,5 @@
 ## Usage
 
 ```code
-python3 thermostat/relay/relay.py
-
-python3 thermostat/sensor/sensor.py
+python3 thermostat/interface.py
 ```
