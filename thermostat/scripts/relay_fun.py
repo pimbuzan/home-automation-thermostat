@@ -3,6 +3,12 @@ import RPi.GPIO as GPIO
 
 PIN = 12
 
+
+def setup():
+    GPIO.setmode(GPIO.BOARD)
+    GPIO.setup(PIN, GPIO.OUT)
+
+
 def play():
     sleep_time = 1.0
     loop_count = 0

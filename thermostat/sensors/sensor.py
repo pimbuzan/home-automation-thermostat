@@ -13,9 +13,10 @@ class TemperatureSensor(object):
 
     def __str__(self):
         fmt_timestamp = datetime.fromtimestamp(self._last_read_time)
+        ftm_read_val = format(self._last_read_val, '.1f')
         return ("Temperature Sensor:\n"
                 "Last read value: {}\n"
-                "Last read time: {}".format(self._last_read_val,
+                "Last read time: {}".format(ftm_read_val,
                                             fmt_timestamp))
 
     @property
