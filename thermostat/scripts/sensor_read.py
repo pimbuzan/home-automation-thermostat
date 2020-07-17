@@ -1,12 +1,11 @@
-# low level component
 import re
 from time import sleep
 
 # constants
-TYPE = 'DS18B20'
 SENSOR_DUMP = '/sys/bus/w1/devices/28-8000002cd6af/w1_slave'
 PATTERN = 't='
 #
+
 
 def read_tmp():
     try:
