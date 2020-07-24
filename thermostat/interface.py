@@ -6,7 +6,7 @@ from flask import Flask
 import RPi.GPIO as GPIO
 
 from controller import Controller
-from relays import Relay
+from relays.relay import Relay
 from sensors import TemperatureSensor
 
 ctl = Controller(TemperatureSensor(), Relay(GPIO))
@@ -16,13 +16,15 @@ app = Flask(__name__)
 
 def task_run_controller_loop():
     while True:
-        try:
-            temp = db.get('temp')
-            ctl.threshold = temp
-            time.sleep(1)
-            ctl.monitor()
-        except Exception as e:
-            print(e)
+        temp = db.get('temp')
+        ctl.threshold = temp
+        time.sleep(1)
+        ctl.monitor()
+
+
+@app.route('/config/read/', methods=["GET"])
+def read_tmp():
+    return "Thermostat temperature is set to: {}".format(db.get('temp'))
 
 
 @app.route('/config/<float:temp>', methods=["POST"])

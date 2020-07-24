@@ -1,6 +1,6 @@
 import sys
 import unittest
-from unittest.mock import patch, Mock
+from unittest.mock import Mock
 
 from thermostat.relays.relay import Relay, PIN
 
