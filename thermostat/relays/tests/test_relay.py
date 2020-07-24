@@ -17,13 +17,13 @@ class TestRelayMethods(unittest.TestCase):
     def test_relay_open_conn(self):
         self.relay.open_conn()
         self.assertEqual(self.relay.state, 'open')
-        self.relay._gpio.output.assert_called()
+        self.assertEqual(self.relay._gpio.output.called, True)
         self.relay._gpio.output.assert_called_once_with(PIN, False)
 
     def test_relay_close_conn(self):
         self.relay.close_conn()
         self.assertEqual(self.relay.state, 'closed')
-        self.relay._gpio.output.assert_called()
+        self.assertEqual(self.relay._gpio.output.called, True)
         self.relay._gpio.output.assert_called_once_with(PIN, True)
 
 

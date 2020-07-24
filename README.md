@@ -1,7 +1,10 @@
 # home-automation-thermostat
 
 ## Built with
-* Python 3.x
+* Python 3.5
+
+## Description
+
 
 ## Hardware
 
