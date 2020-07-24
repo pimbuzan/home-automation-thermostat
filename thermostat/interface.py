@@ -3,12 +3,13 @@ import time
 
 from redis import Redis
 from flask import Flask
+import RPi.GPIO as GPIO
 
 from controller import Controller
 from relays import Relay
 from sensors import TemperatureSensor
 
-ctl = Controller(TemperatureSensor(), Relay())
+ctl = Controller(TemperatureSensor(), Relay(GPIO))
 db = Redis()
 app = Flask(__name__)
 

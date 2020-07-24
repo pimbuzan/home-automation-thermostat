@@ -1,7 +1,5 @@
 import atexit
 
-import RPi.GPIO as GPIO
-
 PIN = 12
 ON = 'closed'
 OFF = 'open'
@@ -9,9 +7,9 @@ OFF = 'open'
 
 class Relay(object):
 
-    def __init__(self):
+    def __init__(self, gpio):
         # setup GPIO pinout
-        setup()
+        self._gpio = self.setup(gpio)
         self._state = None
 
     def open_conn(self):
@@ -19,7 +17,7 @@ class Relay(object):
         # opens circuit
         if not self.state == OFF:
             self.state = OFF
-            GPIO.output(PIN, False)
+            self._gpio.output(PIN, False)
             print('Relay: opening circuit')
             return
         return
@@ -29,7 +27,7 @@ class Relay(object):
         # close circuit
         if not self.state == ON:
             self.state = ON
-            GPIO.output(PIN, True)
+            self._gpio.output(PIN, True)
             print('Relay: closing circuit')
             return
         return
@@ -42,14 +40,20 @@ class Relay(object):
     def state(self, op_state):
         self._state = op_state
 
-
-def setup():
-    GPIO.setmode(GPIO.BOARD)
-    GPIO.setup(PIN, GPIO.OUT)
+    @staticmethod
+    def setup(gpio):
+        gpio.setmode(gpio.BOARD)
+        gpio.setup(PIN, gpio.OUT)
+        return gpio
 
 
 def cleanup():
-    GPIO.cleanup()
+    try:
+        import RPi.GPIO as GPIO
+        GPIO.cleanup()
+    except RuntimeError:
+        # This module can only be run on a Raspberry Pi
+        pass
 
 
 atexit.register(cleanup)
