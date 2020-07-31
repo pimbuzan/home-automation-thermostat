@@ -21,10 +21,12 @@ def task_run_controller_loop():
     while True:
         temp = db.get('temp')
         logging.debug(
-            'Controller temp threshold={}'.format(temp)
+            'Controller temp threshold={}'.format(str(temp))
         )
+        sensor_tmp = ctl.temperature
+        db.set('sensor_temp', sensor_tmp)
         logging.debug(
-            'Sensor temp reading={}'.format(ctl.temperature)
+            'Sensor temp reading={}'.format(sensor_tmp)
         )
         ctl.threshold = temp
         ctl.monitor()

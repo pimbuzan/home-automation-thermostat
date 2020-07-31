@@ -26,7 +26,6 @@ class TemperatureSensor(object):
     def read(self):
         self._last_read_val = self._read_tmp()
         self._last_read_time = self._timestamp
-        print(self)
         return self._last_read_val
 
     def _read_tmp(self):
@@ -39,5 +38,3 @@ class TemperatureSensor(object):
         except AttributeError:
             raise Exception(
                 'Temperature sensor dump location or pattern is invalid: {}'.format(SENSOR_DUMP))
-        except Exception as err:
-            raise err
