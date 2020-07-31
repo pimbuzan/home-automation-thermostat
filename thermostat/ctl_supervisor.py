@@ -1,6 +1,7 @@
 import logging
 import time
 
+from redis import Redis
 import RPi.GPIO as GPIO
 
 from controller import Controller
