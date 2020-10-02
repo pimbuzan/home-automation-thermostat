@@ -19,9 +19,9 @@ db = Redis()
 
 def task_run_controller_loop():
     while True:
-        temp = db.get('temp')
+        temp = db.get('temp').decode()
         logging.debug(
-            'Controller temp threshold={}'.format(str(temp))
+            'Controller temp threshold={}'.format(temp)
         )
         sensor_tmp = ctl.temperature
         db.set('sensor_temp', sensor_tmp)

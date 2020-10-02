@@ -1,5 +1,8 @@
 from enum import Enum
 
+from relays.relay import Relay
+from sensors import TemperatureSensor
+
 # this is used to prevent relay rapid switching
 MARGIN = 0.5
 
@@ -17,7 +20,7 @@ class Controller(object):
     Open / Close the relay based on the threshold temperature
     """
 
-    def __init__(self, tmp_sensor, relay):
+    def __init__(self, tmp_sensor: TemperatureSensor, relay: Relay):
         self._tmp_sensor = tmp_sensor
         self._relay = relay
         self._threshold = None
@@ -53,7 +56,7 @@ class Controller(object):
         else:
             self._operation_handler(Operation.NOOP)
 
-    def _operation_handler(self, operation):
+    def _operation_handler(self, operation: Operation):
         """Accepts an operation object and runs an action mapped to that operation"""
         operations = {
             0: self._action_noop,

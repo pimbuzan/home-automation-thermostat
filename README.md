@@ -22,5 +22,6 @@
 ## Usage
 
 ```code
-python3 thermostat/interface.py
+supervisord
+uwsgi --http-socket :5000 --plugin python3 --wsgi-file wsgi.py
 ```

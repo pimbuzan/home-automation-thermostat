@@ -11,7 +11,7 @@ class TemperatureSensor(object):
         self._last_read_val = None
         self._last_read_time = self._timestamp
 
-    def __str__(self):
+    def __str__(self) -> str:
         fmt_timestamp = datetime.fromtimestamp(self._last_read_time)
         ftm_read_val = format(self._last_read_val, '.1f')
         return ("Temperature Sensor:\n"
@@ -20,15 +20,15 @@ class TemperatureSensor(object):
                                             fmt_timestamp))
 
     @property
-    def _timestamp(self):
+    def _timestamp(self) -> float:
         return datetime.timestamp(datetime.now())
 
-    def read(self):
+    def read(self) -> float:
         self._last_read_val = self._read_tmp()
         self._last_read_time = self._timestamp
         return self._last_read_val
 
-    def _read_tmp(self):
+    def _read_tmp(self) -> float:
         try:
             with open(SENSOR_DUMP) as f:
                 lines = f.read()
