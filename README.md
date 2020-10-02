@@ -24,4 +24,6 @@
 ```code
 supervisord
 uwsgi --http-socket :5000 --plugin python3 --wsgi-file wsgi.py
+uwsgi --ini thermostat.ini --http-socket :5000 --plugin python3 --wsgi-file wsgi.py
+
 ```

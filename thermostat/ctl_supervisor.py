@@ -3,10 +3,9 @@ import time
 
 from redis import Redis
 import RPi.GPIO as GPIO
-
-from controller import Controller
-from relays.relay import Relay
-from sensors import TemperatureSensor
+from .controller import Controller
+from .relays import Relay
+from .sensors import TemperatureSensor
 
 logging.basicConfig(
     format='%(asctime)s %(levelname)s %(message)s',

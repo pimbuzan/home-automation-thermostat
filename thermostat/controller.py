@@ -1,6 +1,6 @@
 from enum import Enum
 
-from relays.relay import Relay
+from relays import Relay
 from sensors import TemperatureSensor
 
 # this is used to prevent relay rapid switching
@@ -13,7 +13,7 @@ class Operation(Enum):
     HEAT_OFF = 2
 
 
-class Controller(object):
+class Controller:
     """
     This object should operate the Relay and the Temp Sensor
     Read / Set the threshold value
@@ -31,11 +31,11 @@ class Controller(object):
         return self._threshold
 
     @threshold.setter
-    def threshold(self, value):
+    def threshold(self, value: float) -> None:
         self._threshold = float(value)
 
     @property
-    def temperature(self):
+    def temperature(self) -> float:
         return self._tmp_sensor.read()
 
     def monitor(self):
