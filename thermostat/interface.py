@@ -1,31 +1,30 @@
 from typing import Dict
-import time
 
 from redis import Redis
-from flask import Flask, jsonify
-
+from flask import Flask, jsonify, request
 db = Redis()
 app = Flask(__name__)
 
 
 @app.route('/sensor/read/', methods=['GET'])
 def read_sensor() -> Dict[str, str]:
-    message = 'Thermostat sensor reads: {} C'.format(
+    message = 'The thermostat sensor reads: {} degrees celsius'.format(
         db.get('sensor_temp').decode())
     return jsonify({'message': message})
 
 
 @app.route('/config/read/', methods=['GET'])
 def read_config() -> Dict[str, str]:
-    message = 'Thermostat temperature is set to: {} C'.format(
+    message = 'The thermostat temperature is set to: {} degrees celsius'.format(
         db.get('temp').decode())
     return jsonify({'message': message})
 
 
-@app.route('/config/<float:temp>/', methods=['POST'])
-def config(temp: float) -> Dict[str, str]:
+@app.route('/config/', methods=['POST'])
+def config() -> Dict[str, str]:
+    temp = request.json.get('temperature')
     db.set('temp', temp)
-    message = 'Thermostat temperature set to: {} C'.format(temp)
+    message = 'Thermostat temperature set to: {} degrees celsius'.format(temp)
     return jsonify({'message': message})
 
 
