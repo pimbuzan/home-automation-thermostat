@@ -6,7 +6,7 @@ import RPi.GPIO as GPIO
 from controller import Controller
 from relays import Relay
 from sensors import TemperatureSensor
-from utils import temperature_formatter as formatter
+from utils.temperature_formatter import convert_to_human_readable as formatter
 
 logging.basicConfig(
     format='%(asctime)s %(levelname)s %(message)s',

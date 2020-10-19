@@ -1,6 +1,6 @@
 from typing import Dict
 
-from utils import temperature_formatter as formatter
+from utils.temperature_formatter import convert_to_human_readable as formatter
 
 from redis import Redis
 from flask import Flask, jsonify, request
