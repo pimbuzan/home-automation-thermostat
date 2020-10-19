@@ -28,7 +28,8 @@ class TemperatureSensor(object):
         self._last_read_time = self._timestamp
         return self._last_read_val
 
-    def _read_tmp(self) -> float:
+    @staticmethod
+    def _read_tmp() -> float:
         try:
             with open(SENSOR_DUMP) as f:
                 lines = f.read()
