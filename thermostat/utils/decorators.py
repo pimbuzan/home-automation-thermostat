@@ -3,10 +3,10 @@ import logging
 log = logging.getLogger()
 
 
-def log_new_operation(func):
+def log_and_update_new_operation(func):
     """
     Purpose:
-        Logs next operation if it is different than the last operation
+        Logs and updates the controller's next operation if it is different than the last operation
     """
     def wrapper(*args, **kwargs):
         controller = args[0]

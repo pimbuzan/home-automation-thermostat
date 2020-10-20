@@ -5,7 +5,7 @@ ON = 'closed'
 OFF = 'open'
 
 
-class Relay(object):
+class Relay:
 
     def __init__(self, gpio):
         # setup GPIO pinout
@@ -37,8 +37,8 @@ class Relay(object):
         return self._state
 
     @state.setter
-    def state(self, op_state):
-        self._state = op_state
+    def state(self, operating_state):
+        self._state = operating_state
 
     @staticmethod
     def setup(gpio):

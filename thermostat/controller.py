@@ -1,8 +1,8 @@
-from constants import Operation, MARGIN
+from constants import Operation, MARGIN, Conditions
 
 from relays import Relay
 from sensors import TemperatureSensor
-from utils.decorators import log_new_operation
+from utils.decorators import log_and_update_new_operation
 
 
 class Controller:
@@ -17,15 +17,15 @@ class Controller:
         self._temp_sensor = temp_sensor
         self._relay = relay
         self._threshold = None
-        self._last_op = None
+        self._last_operation = None
 
     @property
     def last_operation(self):
-        return self._last_op
+        return self._last_operation
 
     @last_operation.setter
-    def last_operation(self, last_op):
-        self._last_op = last_op
+    def last_operation(self, operation):
+        self._last_operation = operation
 
     @property
     def threshold(self):
@@ -52,22 +52,23 @@ class Controller:
         if not self.temperature:
             # wait for sensor valid reading
             self._operation_handler(Operation.NOOP)
-        self._next_operation(self.temperature)
+        self._next_operation(self.temperature, self.threshold)
 
-    def _next_operation(self, temperature):
+    def _next_operation(self, temperature, threshold):
         """
         Purpose:
             This method checks if the temperature is higher or lower than the threshold value
             and determines what is the next operation handler
         """
-        if temperature > self.threshold + MARGIN:
-            self._operation_handler(Operation.HEAT_OFF)
-        elif temperature < self.threshold - MARGIN:
-            self._operation_handler(Operation.HEAT_ON)
-        else:
-            self._operation_handler(Operation.NOOP)
+        for condition in Conditions:
+            if eval(condition.value, {'temperature': temperature,
+                                      'threshold': threshold,
+                                      'MARGIN': MARGIN}):
+                return self._operation_handler(Operation[condition.name])
 
-    @log_new_operation
+        return self._operation_handler(Operation.NOOP)
+
+    @log_and_update_new_operation
     def _operation_handler(self, operation: Operation):
         """Accepts an operation object and runs an action mapped to that operation"""
         actions = {
