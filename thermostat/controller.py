@@ -72,9 +72,9 @@ class Controller:
     def _operation_handler(self, operation: Operation):
         """Accepts an operation object and runs an action mapped to that operation"""
         actions = {
-            0: self._action_noop,
-            1: self._action_start_heat,
-            2: self._action_stop_heat,
+            Operation.NOOP: self._action_noop,
+            Operation.HEAT_ON: self._action_start_heat,
+            Operation.HEAT_OFF: self._action_stop_heat,
         }
         action = actions.get(operation.value, self._action_noop)
         action()
